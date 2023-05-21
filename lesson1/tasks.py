@@ -31,7 +31,7 @@ def task_4():
 
     number = digits[0]
     result: int = int(number / 6)
-    print(f"{number} -> {result} {result * 4} {result}")
+    helpers.write_output(f"{number} -> {result} {result * 4} {result}")
 
 
 def task_6():
