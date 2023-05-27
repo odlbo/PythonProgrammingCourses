@@ -124,8 +124,6 @@ def task_20():
     alphabet = _LATIN_ALPHABET \
         if word[0] in _LATIN_ALPHABET else _CIRILLIC_ALPHABET
 
-    result = 0
-    for i in word:
-        result += alphabet[i]
+    result = sum([alphabet[i] for i in word])
 
     helpers.write_output(result)
