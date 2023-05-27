@@ -26,7 +26,6 @@ _CIRILLIC_ALPHABET.update({
     k.lower(): v for k, v in _CIRILLIC_ALPHABET.items()})
 
 
-
 def task_16():
     elements_count = helpers.read_user_input(
         prompt='input elements count',
@@ -130,4 +129,3 @@ def task_20():
         result += alphabet[i]
 
     helpers.write_output(result)
-
