@@ -53,7 +53,8 @@ def read_user_input_inner(
 
 def read_user_input(
         prompt, elements_type, elements_delimeter='',
-        elements_required_count=None, custom_elements_checkers=None):
+        elements_required_count=None, custom_elements_checkers=None,
+        retry_on_errors=True):
 
     while True:
         try:
@@ -66,4 +67,6 @@ def read_user_input(
             )
         except UserInputError as err:
             write_output(UserInputError)
+            if not retry_on_errors:
+                raise
             continue

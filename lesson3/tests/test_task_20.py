@@ -6,19 +6,35 @@ from lesson3.tests.test_task_base import Test_TaskBase
 class Test_Task_18(Test_TaskBase):
     def test_calculation(self):
         for inpt, expected_res in (
-                (('3', '2 1 2', '2'), '2\n'),
-                (('3', '1 2 3', '0'), '1\n'),
-                (('3', '1 3 4', '2'), '1\n')):
+                (('ноутбук',), '12\n'),
+                (('Apple',), '9\n'),):
             self.reset_output()
             self.mock_input(inpt)
-            tasks.task_18()
+            tasks.task_20()
             self.assertEqual(self.task_output, expected_res)
 
-    def test_wrong_input(self):
+    def test_wrong_one_symbol_input(self):
         for inpt in (
-                ('x', '2 1 2', '2'),
-                ('3', '1 x 3', '2'),
-                ('3', '1 2 3', 'x')):
+                ('zzz1zzz',),
+                ('жжж1жжж',),):
             self.mock_input(inpt)
-            with self.assertRaisesRegex(helpers.UserInputError, "'x' is not of type int, try again"):
-                tasks.task_18()
+            with self.assertRaisesRegex(helpers.UserInputError, "'1' is not allowed, try again"):
+                tasks.task_20()
+
+    def test_wrong_many_symbols_input(self):
+        for inpt in (
+                ('zzz12zzz',),
+                ('жжж12жжж',),):
+            self.mock_input(inpt)
+            with self.assertRaisesRegex(helpers.UserInputError, "'1', '2' is not allowed, try again"):
+                tasks.task_20()
+
+    def test_mixed_alphabets(self):
+        self.mock_input(('zzzжжж',))
+        with self.assertRaisesRegex(helpers.UserInputError, "Latin and cirillic simbols are mixed, try again"):
+            tasks.task_20()
+
+    def test_empty_word(self):
+        self.mock_input(('',))
+        with self.assertRaisesRegex(helpers.UserInputError, "Word is empty, try again"):
+            tasks.task_20()

@@ -3,7 +3,7 @@ import builtins
 from unittest.mock import Mock
 from unittest import TestCase
 
-from lesson2.helpers import UserInputError, read_user_input_inner
+from lesson3.helpers import UserInputError, read_user_input_inner, read_user_input
 
 
 class Test_ReadUserInputInner(TestCase):
@@ -15,7 +15,7 @@ class Test_ReadUserInputInner(TestCase):
             prompt='enter user input',
             elements_type=int,
             elements_delimeter=' ',
-            elements_required_count=3
+            elements_required_count=3,
         )
         self.assertListEqual(result, [1, 2, 3])
 
@@ -33,7 +33,7 @@ class Test_ReadUserInputInner(TestCase):
             prompt='enter user input',
             elements_type=int,
             elements_delimeter=' ',
-            elements_required_count=3
+            elements_required_count=3,
         )
 
         self.assertEqual(catched_prompt, 'enter user input')
@@ -43,7 +43,7 @@ class Test_ReadUserInputInner(TestCase):
             prompt='enter user input',
             elements_type=str,
             elements_delimeter=' ',
-            elements_required_count=3
+            elements_required_count=3,
         )
         self.assertListEqual(result, ['1', '2', '3'])
 
@@ -89,11 +89,26 @@ class Test_ReadUserInput(TestCase):
         builtins.input = Mock(return_value='123')
 
     def test__read_user_input(self):
-        result = read_user_input_inner(
+        result = read_user_input(
             prompt='enter user input',
             elements_type=int,
             elements_delimeter='',
             elements_required_count=3,
         )
         self.assertListEqual(result, [1, 2, 3])
+
+
+class Test_ReadUserInputWithoutRetries(TestCase):
+    def setUp(self):
+        builtins.input = Mock(return_value='x')
+
+    def test__read_wrong_user_input(self):
+        with self.assertRaisesRegex(UserInputError, "'x' is not of type int, try again"):
+            read_user_input(
+                prompt='enter user input',
+                elements_type=int,
+                elements_delimeter='',
+                elements_required_count=1,
+                retry_on_errors=False,
+            )
 
