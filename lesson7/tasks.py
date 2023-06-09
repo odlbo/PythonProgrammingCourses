@@ -19,10 +19,9 @@ def task_34():
             partial(_more_gte_one_element_checker, message="Input at least one phrase, try again")),
     )
 
-    vowel_counts = []
-    for phr in phrases:
-        vowel_count = _count_vowels(phr)
-        vowel_counts.append(vowel_count)
+    vowel_counts = \
+        [sum(phr.count(sym) for sym in _VOWEL_SYMBOLS)  # sum of vowel symbols for a phrase
+         for phr in phrases]  # iterate over phrases
 
     if max(vowel_counts) == min(vowel_counts):
         result = 'Парам пам-пам'
@@ -72,11 +71,3 @@ def _more_gte_one_element_checker(user_input, message):
         if len(item) == 0:
             raise helpers.UserInputError(message)
 
-
-## Helpers
-def _count_vowels(phrase):
-    vowel_count = 0
-    for sym in phrase:
-        if sym.lower() in _VOWEL_SYMBOLS:
-            vowel_count += 1
-    return vowel_count
