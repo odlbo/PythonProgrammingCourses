@@ -20,8 +20,7 @@ def task_34():
     )
 
     vowel_counts = \
-        [sum(phr.count(sym) for sym in _VOWEL_SYMBOLS)  # sum of vowel symbols for a phrase
-         for phr in phrases]  # iterate over phrases
+        list(map(lambda phr: sum(map(lambda sym: phr.count(sym), _VOWEL_SYMBOLS)), phrases))
 
     if max(vowel_counts) == min(vowel_counts):
         result = 'Парам пам-пам'
@@ -39,22 +38,23 @@ def task_36():
             partial(_more_gte_one_element_checker, message="Input code, try again"),),
     )
 
-    result = eval(code)
-
-    output = '\n'.join(
-        ' '.join(str(item) for item in row) for row in result)
-
-    helpers.write_output(output)
+    eval(code)
 
 
 def print_operation_table(operation, num_rows=6, num_cols=6):
+    # calculate result matrix
     result = []
     for row in range(1, num_rows + 1):
         row_item = []
         result.append(row_item)
         for col in range(1, num_cols + 1):
             row_item.append(operation(row, col))
-    return result
+
+    # render result
+    output = '\n'.join(
+        ' '.join(str(item) for item in row) for row in result)
+    helpers.write_output(output)
+
 
 
 ## Checkers
