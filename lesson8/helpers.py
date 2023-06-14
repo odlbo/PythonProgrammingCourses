@@ -72,7 +72,7 @@ def read_user_input(
                 split_elements=split_elements,
             )
         except UserInputError as err:
-            write_output(UserInputError)
+            write_output(err)
             if not retry_on_errors:
                 raise
             continue
