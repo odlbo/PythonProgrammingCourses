@@ -32,14 +32,14 @@ def main():
     storage_client = StorageClient(PATH_TO_CSV_FILE)
 
     helpers.write_output(dedent(
-        '''\
+        f'''\
            Hello, meat bag!
-           [1] -- press for SHOW ALL
-           [2] -- press for SELECT 
-           [3] -- press for ADD DATA
-           [4] -- press for UPDATE DATA
-           [5] -- press for DELETE DATA
-           [6] -- press for EXIT\n'''))
+           [{COMMAND_SHOW_ALL}] -- press for SHOW ALL
+           [{COMMAND_SELECT}] -- press for SELECT 
+           [{COMMAND_ADD}] -- press for ADD DATA
+           [{COMMAND_UPDATE}] -- press for UPDATE DATA
+           [{COMMAND_DELETE}] -- press for DELETE DATA
+           [{COMMAND_EXIT}] -- press for EXIT\n'''))
 
     try:
         while True:
