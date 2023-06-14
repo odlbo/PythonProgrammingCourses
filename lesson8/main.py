@@ -1,4 +1,5 @@
 import os
+from enum import Enum
 
 from textwrap import dedent
 
@@ -11,21 +12,13 @@ PATH_TO_CSV_FILE = os.path.join(
     os.path.dirname(__file__), 'data/phonebook.txt')
 
 
-COMMAND_SHOW_ALL = 1
-COMMAND_SELECT = 2
-COMMAND_ADD = 3
-COMMAND_UPDATE = 4
-COMMAND_DELETE = 5
-COMMAND_EXIT = 6
-
-_AVAILABLE_COMMANDS = {
-    COMMAND_SHOW_ALL,
-    COMMAND_SELECT,
-    COMMAND_ADD,
-    COMMAND_UPDATE,
-    COMMAND_DELETE,
-    COMMAND_EXIT,
-}
+class AvailableCommand(Enum):
+    SHOW_ALL = 1
+    SELECT = 2
+    ADD = 3
+    UPDATE = 4
+    DELETE = 5
+    EXIT = 6
 
 
 def main():
@@ -34,12 +27,12 @@ def main():
     helpers.write_output(dedent(
         f'''\
            Hello, meat bag!
-           [{COMMAND_SHOW_ALL}] -- press for SHOW ALL
-           [{COMMAND_SELECT}] -- press for SELECT 
-           [{COMMAND_ADD}] -- press for ADD DATA
-           [{COMMAND_UPDATE}] -- press for UPDATE DATA
-           [{COMMAND_DELETE}] -- press for DELETE DATA
-           [{COMMAND_EXIT}] -- press for EXIT\n'''))
+           [{AvailableCommand.SHOW_ALL.value}] -- press for SHOW ALL
+           [{AvailableCommand.SELECT.value}] -- press for SELECT 
+           [{AvailableCommand.ADD.value}] -- press for ADD DATA
+           [{AvailableCommand.UPDATE.value}] -- press for UPDATE DATA
+           [{AvailableCommand.DELETE.value}] -- press for DELETE DATA
+           [{AvailableCommand.EXIT.value}] -- press for EXIT\n'''))
 
     try:
         while True:
@@ -48,19 +41,22 @@ def main():
                 elements_type=int,
                 custom_elements_checkers=(_available_command_checker,))
 
-            if command_id == COMMAND_SHOW_ALL:
-                _show_all_command(storage_client)
-            elif command_id == COMMAND_SELECT:
-                _select_command(storage_client)
-            elif command_id == COMMAND_ADD:
-                _add_command(storage_client)
-            elif command_id == COMMAND_UPDATE:
-                _update_command(storage_client)
-            elif command_id == COMMAND_DELETE:
-                _delete_command(storage_client)
-            elif command_id == COMMAND_EXIT:
-                helpers.write_output('Goodbye!')
-                break
+            command = AvailableCommand(command_id)
+
+            match command:
+                case AvailableCommand.SHOW_ALL:
+                    _show_all_command(storage_client)
+                case AvailableCommand.SELECT:
+                    _select_command(storage_client)
+                case AvailableCommand.ADD:
+                    _add_command(storage_client)
+                case AvailableCommand.UPDATE:
+                    _update_command(storage_client)
+                case AvailableCommand.DELETE:
+                    _delete_command(storage_client)
+                case AvailableCommand.EXIT:
+                    helpers.write_output('Goodbye!')
+                    break
     finally:
         storage_client.save_changes()
 
@@ -139,7 +135,7 @@ def _print_persons(persons):
 
 
 def _available_command_checker(user_input):
-    if user_input[0] not in _AVAILABLE_COMMANDS:
+    if user_input[0] not in {c.value for c in AvailableCommand}:
         raise helpers.UserInputError('Invalid command ID, try again')
 
 
