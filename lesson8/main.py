@@ -18,6 +18,15 @@ COMMAND_UPDATE = 4
 COMMAND_DELETE = 5
 COMMAND_EXIT = 6
 
+_AVAILABLE_COMMANDS = {
+    COMMAND_SHOW_ALL,
+    COMMAND_SELECT,
+    COMMAND_ADD,
+    COMMAND_UPDATE,
+    COMMAND_DELETE,
+    COMMAND_EXIT,
+}
+
 
 def main():
     storage_client = StorageClient(PATH_TO_CSV_FILE)
@@ -130,14 +139,7 @@ def _print_persons(persons):
 
 
 def _available_command_checker(user_input):
-    if user_input[0] not in (
-            COMMAND_SHOW_ALL,
-            COMMAND_SELECT,
-            COMMAND_ADD,
-            COMMAND_UPDATE,
-            COMMAND_DELETE,
-            COMMAND_EXIT,
-    ):
+    if user_input[0] not in _AVAILABLE_COMMANDS:
         raise helpers.UserInputError('Invalid command ID, try again')
 
 
