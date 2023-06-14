@@ -24,7 +24,7 @@ def main():
 
     helpers.write_output(dedent(
         '''Hello, meat bag!
-           [1] -- press for SHOW ALL 
+           [1] -- press for SHOW ALL
            [2] -- press for SELECT 
            [3] -- press for ADD DATA
            [4] -- press for UPDATE DATA
@@ -51,8 +51,6 @@ def main():
             elif command_id == COMMAND_EXIT:
                 helpers.write_output('Goodbye!')
                 break
-    except StorageClientBaseException as e:
-        helpers.write_output(f'Error: {e}')
     finally:
         storage_client.close()
 
@@ -80,22 +78,28 @@ def _add_command(storage_client):
 
 def _delete_command(storage_client):
     helpers.write_output('Trying to delete person...')
-    storage_client.delete(
-        helpers.read_one(prompt='Input ID: ', elements_type=int),
-    )
-    helpers.write_output('Person has been deleted\n')
+    try:
+        storage_client.delete(
+            helpers.read_one(prompt='Input ID: ', elements_type=int),
+        )
+        helpers.write_output('Person has been deleted\n')
+    except StorageClientBaseException as e:
+        helpers.write_output(f'Error: {e}\n')
 
 
 def _update_command(storage_client):
     helpers.write_output('Trying to update person...')
 
-    person_id = helpers.read_one(prompt='Input ID: ', elements_type=int)
-    person = _read_person_info()
+    try:
+        person_id = helpers.read_one(prompt='Input ID: ', elements_type=int)
+        person = _read_person_info()
 
-    person.id = person_id
+        person.id = person_id
 
-    storage_client.update(person=person)
-    helpers.write_output('Person has been updated\n')
+        storage_client.update(person=person)
+        helpers.write_output('Person has been updated\n')
+    except StorageClientBaseException as e:
+        helpers.write_output(f'Error: {e}\n')
 
 
 def _read_person_info():
@@ -137,7 +141,7 @@ def _available_command_checker(user_input):
 
 
 def _empty_string_not_allowed_checker(user_input):
-    if not user_input:
+    if not user_input[0].strip():
         raise helpers.UserInputError('Empty string is not allowed, try again')
 
 
