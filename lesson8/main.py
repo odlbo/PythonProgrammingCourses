@@ -4,7 +4,7 @@ from textwrap import dedent
 
 from lesson8 import helpers
 from lesson8.model import Person
-from lesson8.storage import Client as StorageClient
+from lesson8.storage import Client as StorageClient, StorageClientBaseException
 
 
 PATH_TO_CSV_FILE = os.path.join(
@@ -51,7 +51,8 @@ def main():
             elif command_id == COMMAND_EXIT:
                 helpers.write_output('Goodbye!')
                 break
-
+    except StorageClientBaseException as e:
+        helpers.write_output(f'Error: {e}')
     finally:
         storage_client.close()
 
