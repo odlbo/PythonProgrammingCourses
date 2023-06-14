@@ -23,7 +23,8 @@ def main():
     storage_client = StorageClient(PATH_TO_CSV_FILE)
 
     helpers.write_output(dedent(
-        '''Hello, meat bag!
+        '''\
+           Hello, meat bag!
            [1] -- press for SHOW ALL
            [2] -- press for SELECT 
            [3] -- press for ADD DATA
