@@ -54,7 +54,7 @@ class Client:
 
             yield person
 
-    def close(self):
+    def save_changes(self):
         if self._need_to_save_data_flag:
             self._save_data()
 

@@ -62,7 +62,7 @@ def main():
                 helpers.write_output('Goodbye!')
                 break
     finally:
-        storage_client.close()
+        storage_client.save_changes()
 
 
 def _show_all_command(storage_client):
